@@ -72,7 +72,7 @@ function App() {
   return(
     <div className="App">
       <header className="App-header">
-        <h1>Spotify React</h1>
+        <h1>Spotify React test</h1>
         {!loaded ? (
           <button className=" bg-green-500 hover:bg-green-700 text-white"
           onClick={loginToSpotify}>Login to spotify</button>
