@@ -131,6 +131,7 @@ export interface Playlists {
     offset: number;
     previous?: any;
     total: number;
+    is_contain?: boolean;
 }
 
 export interface Item2 {

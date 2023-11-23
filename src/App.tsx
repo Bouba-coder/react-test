@@ -33,7 +33,6 @@ function App() {
     const track = await spotifyService.getUserLikedTracks(
         localStorage.getItem("accessToken") || token || ""
         );
-        console.log("tracks", track)
         setlikedTrack(track);
     };
 
@@ -42,7 +41,6 @@ function App() {
     const playlist = await spotifyService.getUserPlaylist(
       localStorage.getItem("accessToken") || token || ""
     );
-    console.log("playlistssssss", playlist)
     setPlaylist(playlist);
   }
 
@@ -54,13 +52,16 @@ function App() {
       localStorage.setItem("tokenType", token_type);
       localStorage.setItem("expiresIn", expires_in);
       setToken(access_token)
+      if(access_token){
+        getPlaylist()    
+        getProfile()    
+        getTrack()
+      }
         setLoaded(true)
       } else {
         setLoaded(false)
     }
-    getProfile()
-    getPlaylist()
-    getTrack()
+
   }, [])
 
   const logout = () => {
@@ -93,84 +94,5 @@ function App() {
   )
 
 }
-
-
-
-// function App() {
-
-//   const cred = Credentials();
-//   const [authCred, setAuthCred] = useState({});
-//   const [token, setToken] = useState("")
-//   const [artists, setArtists] = useState([])
-
-//   const spotify = SpotifyApi.withClientCredentials(
-//     cred.ClientId,
-//     cred.ClientSecret,
-//     [
-//       "user-read-private",
-//       "user-read-email",
-//     ]
-//   );
-
-  
-
-//   const getAuThentificate = async () => {
-//     const auth = await spotify.authenticate();
-//     const user = await spotify.currentUser.profile()
-//     console.log("user", user)
-//     setAuthCred(auth);
-//     if (auth.accessToken) {
-//       setToken(auth.accessToken.toString());
-//       window.localStorage.setItem("token", auth.accessToken.toString());
-//     } else {
-//       setToken("")
-//     }
-//     setToken(auth.accessToken.toString());
-//     console.log("auth", auth);
-//   }
-
-//   const logout = () => {
-//       setToken("")
-//       window.localStorage.removeItem("token")
-//   }
-
-//   useEffect(() => {
-//       // getAuThentificate()
-//       // setToken(token);
-//     getRefreshToken().then(
-//       (res) => {
-//         console.log("res", res)
-//       }
-//     )
-//   },
-//     []
-//   );
-  
-
-  
-
-//     return (
-//         <div className="App">
-//             <header className="App-header">
-//                 <h1>Spotify React</h1>
-//                 {!token ?
-//                     <button onClick={getAuThentificate}> Login to spotify </button>
-
-//                     : 
-                    
-//                     <button onClick={logout}>Logout</button>}
-
-//                 {token ?
-//                     <p>
-//                       Musique 
-//                     </p>
-
-//                     : <h2>Please login</h2>
-//                 }
-
-//             </header>
-//         </div>
-//     );
-// }
 
 export default App;

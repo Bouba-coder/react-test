@@ -23,11 +23,11 @@ export const UserPlaylist = ( playlist: Playlists ) => {
             localStorage.setItem("expiresIn", expires_in);
             setToken(access_token)
             setLoaded(true)        
-            
+            getPlaylist()
+            getTrack()
             } else {
               setLoaded(false)
-          }
-        getPlaylist()
+          }   
     }, [
         playlist
     ])
@@ -36,50 +36,35 @@ export const UserPlaylist = ( playlist: Playlists ) => {
     const getTrack = async () => {
         const track = await spotifyService.getUserLikedTracks(localStorage.getItem("accessToken") || token || ""
         );
-        console.log("tracks in userPlaylist component", track)
         setLikedTrack(track);
     }
 
     // getplaylist
     const getPlaylist = async () => {
-    const playlist = await spotifyService.getUserPlaylist(
-      localStorage.getItem("accessToken") || token || ""
-    );
-    setUserPlaylist(playlist);
-    getTrack()
-  }
-
-
-    const addPlaylistToLikeTrack = async (id: string) => {
-        const response = await spotifyService.likeTrack(token, id);
-        getTrack()
+        const playlist = await spotifyService.getUserPlaylist(
+        localStorage.getItem("accessToken") || token || ""
+        );
+        setUserPlaylist(playlist)
     }
-    
-    // create a comparator between playlist to likedTracke array for display like or unlike button
-    const comparePlaylistToLikedTrack = () => {
-        userPlaylist?.items.map((playlist: any) => (
-            likedTrack?.items.map((track: any) => (
-                track.track.id === playlist.track.id ? (
-                    <button
-                    onClick={() => addPlaylistToLikeTrack(playlist.track.id)} className="px-4 py-
-                    2 font-semibold leading-5 text-white transition-colors duration-200
-                    transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none
-                    focus:bg-red-600"
-                    >
-                    Dislike
-                </button>
-                ) : (
-                    <button
-                    onClick={() => addPlaylistToLikeTrack(playlist.track.id)} className="px-4 py-
-                    2 font-semibold leading-5 text-white transition-colors duration-200
-                    transform bg-green-500 rounded-md hover:bg-green-600 focus:outline-none
-                    focus:bg-green-600"
-                    >
-                    like
-                </button>
-                )
-            ))
-        ))
+
+    // dislike
+    const like = async (id: string) => {
+        const response = await spotifyService.likeTrack(token, id);
+        if(token) {getTrack()}
+    }
+
+    //dislike function
+    const dislike = async (id: string) => {
+        const response = await spotifyService.unlikeTrack(token, id);
+        if(token) {getTrack()}
+    }
+
+    const isTrackLiked = (id: string) => {
+        if(likedTrack?.items.find((track: any) => track.track.id === id)){
+            return true
+        } else {
+            return false
+        }
     }
 
 
@@ -129,7 +114,7 @@ export const UserPlaylist = ( playlist: Playlists ) => {
                             <div className="flex items-center">
 
                             {
-                                playlist.track.artists.map((artist: any) => (
+                                playlist.track.artists.map((artist: any, i: number) => (
                                     <span>{artist.name}</span>
 
                                 ))
@@ -138,14 +123,27 @@ export const UserPlaylist = ( playlist: Playlists ) => {
                         </td>
 
                         <td className="px-4 py-2">
-                            <button
-                                onClick={() => addPlaylistToLikeTrack(playlist.track.id)} className="px-4 py-
-                                2 font-semibold leading-5 text-white transition-colors duration-200
-                                transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none
-                                focus:bg-red-600"
-                                >
-                            like
-                            </button>
+                           {
+                                 likedTrack && isTrackLiked(playlist.track.id) ? (
+                                  <button
+                                  onClick={() => dislike(playlist.track.id) } className="px-4 py-
+                                  2 font-semibold leading-5 text-white transition-colors duration-200
+                                  transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none
+                                  focus:bg-red-600"
+                                  >
+                                  Dislike
+                             </button>
+                                 ) : (
+                                  <button
+                                  onClick={() => like(playlist.track.id) } className="px-4 py-
+                                  2 font-semibold leading-5 text-white transition-colors duration-200
+                                  transform bg-green-500 rounded-md hover:bg-green-600 focus:outline-none
+                                  focus:bg-green-600"
+                                  >
+                                  Like
+                             </button>
+                                 )
+                           }
                         </td>
                     </tr>
                     ))
