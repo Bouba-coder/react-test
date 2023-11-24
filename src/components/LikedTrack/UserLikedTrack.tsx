@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { spotifyService } from "../service/spotifyService";
-import { Playlists } from "../interfaces/userInterface";
-import { getParamsAfterAuth } from "../utils/utlis";
+import { spotifyService } from "../../service/spotifyService";
+import { Playlists } from "../../interfaces/userInterface";
+import { getParamsAfterAuth } from "../../utils/utlis";
 
 export const UserLikedTrack = (playlist: Playlists) => {
   const [userTrack, setUserTrack] = useState<Playlists>();
@@ -10,7 +10,6 @@ export const UserLikedTrack = (playlist: Playlists) => {
 
   useEffect(() => {
     const getToken = async () => {
-      setLoading(true);
       if (window.location.hash) {
         const { access_token, expires_in, token_type } = getParamsAfterAuth(window.location.hash);
         localStorage.clear();
@@ -18,9 +17,11 @@ export const UserLikedTrack = (playlist: Playlists) => {
         localStorage.setItem("tokenType", token_type);
         localStorage.setItem("expiresIn", expires_in);
         setToken(access_token);
+        setLoading(true);      
+        setUserTrack(playlist);
+        await getTrack();
       }
-      setUserTrack(playlist);
-      await getTrack();
+
       setLoading(false);
     };
 

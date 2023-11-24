@@ -2,7 +2,9 @@ import React, {useState, useEffect} from "react";
 import { spotifyService } from "../service/spotifyService";
 import { Playlists } from "../interfaces/userInterface";
 import { getParamsAfterAuth } from "../utils/utlis";
-import { UserLikedTrack } from "./UserLikedTrack";
+import { UserLikedTrack } from "../components/LikedTrack/UserLikedTrack";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export const UserPlaylist = ( playlist: Playlists ) => {
@@ -32,6 +34,14 @@ export const UserPlaylist = ( playlist: Playlists ) => {
         playlist
     ])
 
+    // notif
+    const notfication = () => {
+        toast.success('Les musiques Spotify ont été chargées', {
+            position: 'top-right',
+            autoClose: 3000,
+        });
+    };
+
     //getLikedTrack
     const getTrack = async () => {
         const track = await spotifyService.getUserLikedTracks(localStorage.getItem("accessToken") || token || ""
@@ -45,6 +55,9 @@ export const UserPlaylist = ( playlist: Playlists ) => {
         localStorage.getItem("accessToken") || token || ""
         );
         setUserPlaylist(playlist)
+        if(loaded){
+            notfication()
+        }
     }
 
     // dislike
@@ -70,9 +83,13 @@ export const UserPlaylist = ( playlist: Playlists ) => {
 
     return(
         <div className="overflow-x-auto" >
-            {
-                likedTrack && <UserLikedTrack {...likedTrack}/>
-            }
+            <ToastContainer />
+            {/* if load dislpay if not send loading en cours */}
+            {loaded && likedTrack ? (
+                <UserLikedTrack {...likedTrack}/>
+            ) : (
+                <h1>Chargement en cours</h1>
+            )}
             <hr />
             <h1 className="text-3xl font-semibold text-black-800 dark:text-black-100 
             flex justify-center
@@ -92,6 +109,7 @@ export const UserPlaylist = ( playlist: Playlists ) => {
 
                 <tbody>
                 {
+                    
                     userPlaylist?.items.map((playlist: any) => (
                         <tr key={playlist.track.id} className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                             <td className="px-4 py-2">
@@ -131,7 +149,7 @@ export const UserPlaylist = ( playlist: Playlists ) => {
                                   transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none
                                   focus:bg-red-600"
                                   >
-                                  Dislike
+                                  Enlever de Titres likés
                              </button>
                                  ) : (
                                   <button
@@ -140,7 +158,7 @@ export const UserPlaylist = ( playlist: Playlists ) => {
                                   transform bg-green-500 rounded-md hover:bg-green-600 focus:outline-none
                                   focus:bg-green-600"
                                   >
-                                  Like
+                                  Ajouter aux Titres likés
                              </button>
                                  )
                            }
