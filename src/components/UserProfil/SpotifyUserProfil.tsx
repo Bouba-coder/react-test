@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { UserProfile } from "../interfaces/userInterface";
+import { UserProfile } from "../../interfaces/userInterface";
 
 
 export const SpotifyUserProfile = (user: UserProfile) => {

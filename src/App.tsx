@@ -4,8 +4,8 @@ import { Playlist, Playlists, UserProfile } from "./interfaces/userInterface";
 import './App.css';
 import { CLIENT_ID, REDIRECT_URL_AFTER_LOGIN, SCOPES_URL_PARAM, SPOTIFY_AUTHORIZE_ENDPOINT } from "./config/spotifyCredential";
 import { spotifyService } from "./service/spotifyService";
-import { SpotifyUserProfile } from "./pages/SpotifyUserProfil";
-import { UserLikedTrack } from "./pages/UserLikedTrack";
+import { SpotifyUserProfile } from "./components/UserProfil/SpotifyUserProfil";
+import { UserLikedTrack } from "./components/LikedTrack/UserLikedTrack";
 import { UserPlaylist } from "./pages/UserPlaylist";
 
 function App() {
@@ -72,7 +72,7 @@ function App() {
   return(
     <div className="App">
       <header className="App-header">
-        <h1>Spotify React</h1>
+        <h1>Spotify React test</h1>
         {!loaded ? (
           <button className=" bg-green-500 hover:bg-green-700 text-white"
           onClick={loginToSpotify}>Login to spotify</button>

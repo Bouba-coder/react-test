@@ -1,6 +1,7 @@
 # React-spotify test
 
 Application qui utilise l'API de Spotify.
+This app pull your playlist and you can like or dislike, adding somme podcast or songs in your favorites track.
 
 ## Installation
 
