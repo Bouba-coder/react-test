@@ -33,12 +33,6 @@ export const UserLikedTrack = (playlist: Playlists) => {
     setUserTrack(track);
   };
 
-  const unLike = (id: string) => {
-    console.log("id dislike", id);
-    spotifyService.unlikeTrack(token, id);
-    getTrack();
-  };
-
   return (
     <div className="overflow-x-auto" id="htmlData">
       <h1 className="text-3xl font-semibold text-black-800 dark:text-black-100 
@@ -53,7 +47,6 @@ export const UserLikedTrack = (playlist: Playlists) => {
                 <th scope="col" className="px-4 py-3">Nom</th>
                 <th scope="col" className="px-4 py-3">Artist</th>
                 <th scope="col" className="px-4 py-3">Album</th>
-                <th scope="col" className="px-4 py-3">Action</th>
             </tr>
         </thead>
 
@@ -78,17 +71,6 @@ export const UserLikedTrack = (playlist: Playlists) => {
 
                     {track?.track?.album?.name}
                     </div>
-                </td>
-
-                <td className="px-4 py-2">
-                    <button
-                    onClick={() => unLike(track?.track?.id) } className="px-4 py-
-                    2 font-semibold leading-5 text-white transition-colors duration-200
-                    transform bg-red-500 rounded-md hover:bg-red-600 focus:outline-none
-                    focus:bg-red-600"
-                    >
-                    Dislike
-                </button>
                 </td>
             </tr>
             ))
