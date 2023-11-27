@@ -85,7 +85,7 @@ export const UserPlaylist = ( playlist: Playlists ) => {
         <div className="overflow-x-auto" >
             <ToastContainer />
             {/* if load dislpay if not send loading en cours */}
-            {loaded && likedTrack ? (
+            { loaded && likedTrack ? (
                 <UserLikedTrack {...likedTrack}/>
             ) : (
                 <h1>Chargement en cours</h1>
